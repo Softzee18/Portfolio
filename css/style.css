@@ -270,6 +270,7 @@ ul, ol { margin: 0 0 16px; padding-left: 20px; color: var(--muted); }
   padding: 6px 10px;
   border-radius: 999px;
   font-weight: 600;
+  font-size: 0.9rem;
   box-shadow: 0 4px 12px rgba(11,41,72,0.04);
   transition: background 0.2s, color 0.2s;
 }
@@ -950,14 +951,19 @@ body.dark .contact-info p {
 /* ====== Responsive ====== */
 @media (min-width: 720px) {
   .hero-inner { grid-template-columns: 1fr 420px; }
+  .badge-list li { justify-content: flex-start; 
+   font-size: 0.9rem; }
   .cards { grid-template-columns: repeat(3, 1fr); }
   .about-inner { flex-direction: row; }
 }
+
 @media (max-width: 900px) {
   .about-inner {
     flex-direction: column;
     gap: 1.5rem;
   }
+   .badge-list li { justify-content: flex-start; 
+   font-size: 0.7rem; }
   .about-photo, .about-text {
     flex: 1 1 100%;
   }
