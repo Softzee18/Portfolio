@@ -396,8 +396,33 @@ ul, ol { margin: 0 0 16px; padding-left: 20px; color: var(--muted); }
 }
 
 /* Accordion styles */
-.accordion { margin: 2rem 0; }
-.accordion-item { margin-bottom: 1.2rem; border-radius: 10px; background: var(--card); box-shadow: 0 2px 12px rgba(11,41,72,0.06);}
+
+.accordion { 
+  margin: 2rem 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto; 
+
+}
+
+.accordion-item { 
+  margin-bottom: 1.2rem; 
+  border-radius: 10px; 
+ background: var(--card); box-shadow: 0 2px 12px rgba(11,41,72,0.06);
+}
+
+.accordion p{
+  margin: 0;
+  padding: 0;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
 .accordion-btn {
   width: 100%;
   text-align: left;
@@ -418,23 +443,33 @@ ul, ol { margin: 0 0 16px; padding-left: 20px; color: var(--muted); }
 }
 .accordion-panel {
   max-height: 0;
+  max-width: 500px;
   overflow: hidden;
   transition: max-height 0.35s cubic-bezier(.4,0,.2,1);
   background: #f9f9fb;
   padding: 0 1.2rem;
   border-radius: 0 0 10px 10px;
 }
+
 /* Accordion caret icon */
 .accordion-caret {
   font-size: 1em;
-  margin-left: 8px;
+  /* margin-left: 90px; */
+  float: right;
   transition: transform 0.3s;
   display: inline-block;
 }
 .accordion-btn[aria-expanded="true"] + .accordion-panel {
   padding: 1rem 1.2rem 1.2rem 1.2rem;
+  
 }
-.accordion-panel ul { margin: 0; padding-left: 1.2rem; }
+.accordion-panel ul { 
+  margin: 0; padding-left: 1.2rem; 
+  color: var(--muted);
+  
+}
+
+
 
 /* ====== Testimonials ====== */
 .about-testimonials {
