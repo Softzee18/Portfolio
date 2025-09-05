@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const worksCarouselTrack = document.getElementById('worksCarouselTrack');
     const worksCarouselDots = document.getElementById('worksCarouselDots');
     worksSlides = worksData[service] || [];
-    if (worksModalTitle) worksModalTitle.textContent = title + " — My Works";
+    if (worksModalTitle) worksModalTitle.textContent = title;
     if (worksCarouselTrack) {
       worksCarouselTrack.innerHTML = worksSlides.map(w =>
         `<div class="works-carousel-slide">
