@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let currentSlide = 0;
   let worksSlides = [];
+  let autoSlideInterval;
 
   function showWorksModal(service, title) {
     const worksModal = document.getElementById('worksModal');
@@ -238,20 +239,40 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     currentSlide = 0;
     updateCarousel();
-    if (worksModal) worksModal.classList.add('open');
+    if (worksModal) {
+      worksModal.classList.add('open');
+      startAutoSlide();
+    }
   }
 
   function updateCarousel() {
     const worksCarouselTrack = document.getElementById('worksCarouselTrack');
     const slides = worksCarouselTrack ? worksCarouselTrack.querySelectorAll('.works-carousel-slide') : [];
-    if (slides.length) {
-      slides.forEach((slide, i) => {
-        slide.style.display = (i === currentSlide) ? 'flex' : 'none';
-      });
+    if (worksCarouselTrack && slides.length) {
+      const slide = slides[0];
+      const slideWidth = slide ? slide.offsetWidth : worksCarouselTrack.offsetWidth;
+      worksCarouselTrack.style.transition = 'transform 0.6s cubic-bezier(.4,0,.2,1)';
+      worksCarouselTrack.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
     }
     document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
       dot.classList.toggle('active', i === currentSlide);
     });
+  }
+
+  function startAutoSlide() {
+    stopAutoSlide();
+    autoSlideInterval = setInterval(() => {
+      const worksCarouselTrack = document.getElementById('worksCarouselTrack');
+      const slides = worksCarouselTrack ? worksCarouselTrack.querySelectorAll('.works-carousel-slide') : [];
+      if (slides.length) {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateCarousel();
+      }
+    }, 3000); // Change image every 3 seconds
+  }
+
+  function stopAutoSlide() {
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
   }
 
   // See Works button event
@@ -285,9 +306,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // Close modal
   document.getElementById('closeWorksModal')?.addEventListener('click', function() {
     document.getElementById('worksModal').classList.remove('open');
+    stopAutoSlide();
   });
   document.getElementById('worksModal')?.addEventListener('click', function(e) {
-    if (e.target === this) this.classList.remove('open');
+    if (e.target === this) {
+      this.classList.remove('open');
+      stopAutoSlide();
+    }
   });
 
   // --- Lightbox for viewing image ---
