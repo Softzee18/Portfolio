@@ -1,0 +1,121 @@
+/* ==================================================
+   style.structured.css - organized stylesheet
+   Sections:
+   1. Variables
+   2. Reset & Base
+   3. Layout & Containers
+   4. Header / Nav
+   5. Hero & Showcase Slideshow
+   6. Controls (arrows / dots)
+   7. Cards / Services Grid
+   8. Testimonials
+   9. Forms / Contact
+   10. Modals / Carousel
+   11. Utilities & Small Components
+   12. Responsive breakpoints
+   13. Dark mode
+   ================================================== */
+
+/* ---------- 1. Variables ---------- */
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#0b2948;
+  --muted:#6b7a8b;
+  --accent1:#5b86e5;
+  --accent2:#36d1dc;
+  --accent-gradient:linear-gradient(135deg,var(--accent1),var(--accent2));
+  --glass:rgba(255,255,255,0.6);
+  --max-width:1100px;
+}
+body.dark{ --bg:#071029; --card:rgba(255,255,255,0.04); --text:#e6f0ff; --muted:#98a9c7; --accent1:#8a2be2; --accent2:#2bd2ff; }
+
+/* ---------- 2. Reset & Base ---------- */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);transition:background .25s,color .25s}
+a{color:var(--accent1);text-decoration:none}
+a:hover{color:var(--accent2)}
+img{max-width:100%;height:auto;display:block}
+.container{max-width:var(--max-width);margin:0 auto;padding:0 16px}
+.section{padding:32px 0}
+
+/* ---------- 3. Layout & Utilities ---------- */
+.flex{display:flex}
+.center{display:flex;align-items:center;justify-content:center}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.section-title{font-size:1.25rem;margin-bottom:12px}
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent-gradient);color:#fff;font-weight:700;border:none}
+.btn.ghost{background:transparent;color:var(--text);border:2px solid var(--accent1)}
+
+/* ---------- 4. Header / Nav ---------- */
+.site-header{position:sticky;top:0;background:var(--glass);backdrop-filter:blur(8px);z-index:120;padding:10px 0}
+.header-inner{display:flex;align-items:center;gap:16px}
+.logo{width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--card);display:flex;align-items:center;justify-content:center}
+.main-nav{display:flex;gap:22px;align-items:center}
+.main-nav .nav-link{padding:8px 10px;border-radius:8px;font-weight:600;color:var(--text)}
+.main-nav .nav-link:hover{background:var(--accent-gradient);color:#fff}
+.hamburger{display:none}
+@media(max-width:719px){.main-nav{display:none}.hamburger{display:flex}}
+
+/* ---------- 5. Hero & Showcase Slideshow ---------- */
+.home-hero{padding:48px 0;background:linear-gradient(180deg,rgba(91,134,229,0.06),rgba(54,209,220,0.03))}
+.home-hero .hero-inner{display:grid;grid-template-columns:1fr 480px;gap:28px;align-items:center}
+.hero-left h1{font-size:2.2rem;line-height:1.03}
+.hero-sub{color:var(--muted);margin-top:8px}
+.hero-showcase{position:relative;width:100%;height:320px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,255,255,0.95));display:block}
+.hero-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;opacity:0;transform:scale(.99);transition:opacity .5s ease,transform 8s cubic-bezier(.2,.9,.2,1)}
+.hero-slide img{max-width:100%;max-height:100%;object-fit:contain}
+.hero-slide.active{opacity:1;transform:scale(1.03) translateY(-2%);z-index:2}
+
+/* ---------- 6. Controls (arrows / dots) ---------- */
+.hero-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.9);border:none;width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 8px 22px rgba(11,41,72,0.08);z-index:6}
+.hero-prev{left:12px}.hero-next{right:12px}
+.hero-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:8px;z-index:6}
+.hero-dots button{width:10px;height:10px;border-radius:50%;border:none;background:#e6eef7;cursor:pointer}
+.hero-dots button.active{background:var(--accent1);box-shadow:0 2px 6px rgba(11,41,72,0.12)}
+
+/* ---------- 7. Cards / Services Grid ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.95),var(--card));padding:20px;border-radius:14px;box-shadow:0 10px 30px rgba(11,41,72,0.06);border:1px solid rgba(11,41,72,0.04);display:flex;flex-direction:column;gap:8px;transition:transform .22s,box-shadow .22s}
+.card h3{margin:0;font-size:1.1rem}
+.card p{margin:0;color:var(--muted)}
+.card .link{margin-top:auto;color:var(--accent1);font-weight:700}
+.card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(11,41,72,0.10)}
+
+/* ---------- 8. Testimonials ---------- */
+.testimonials-wrapper{display:flex;gap:20px;flex-wrap:wrap}
+.testimonials-list{flex:0 0 520px;max-height:calc(100vh - 160px);overflow:auto;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,0.6),#fff);border-radius:10px;border:1px solid rgba(11,41,72,0.04)}
+.testimonial-card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(11,41,72,0.04);border:1px solid rgba(11,41,72,0.04)}
+.testimonial-card.pending{opacity:.95;border-style:dashed;border-color:#f0ad4e}
+
+/* ---------- 9. Forms / Contact ---------- */
+.form-group{margin-bottom:12px}
+.form-group label{display:block;margin-bottom:6px;font-weight:600}
+.form-group input,.form-group textarea{width:100%;padding:10px;border-radius:8px;border:1.5px solid #e6eef7;background:#f9f9fb}
+
+/* ---------- 10. Modals / Carousel ---------- */
+.works-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(11,41,72,0.32);z-index:9999}
+.works-modal.open{display:flex}.works-modal-content{background:var(--card);border-radius:16px;padding:20px;max-width:720px;width:94vw}
+
+/* ---------- 11. Utilities ---------- */
+.lead{font-size:1.05rem;color:var(--muted);text-align:center}
+.small-muted{color:var(--muted);font-size:.95rem}
+
+/* ---------- 12. Responsive ---------- */
+@media(max-width:979px){
+  .home-hero .hero-inner{grid-template-columns:1fr}
+  .hero-showcase{height:auto;min-height:180px}
+  .hero-slide{position:relative;display:none;opacity:0;transform:none}
+  .hero-slide.active{display:flex;opacity:1}
+  .testimonials-list{flex-basis:100%;max-height:none}
+}
+@media(max-width:719px){
+  .header-inner{gap:8px}
+}
+
+/* ---------- 13. Dark mode tweaks ---------- */
+body.dark{background:var(--bg);color:var(--text)}
+body.dark .card, body.dark .testimonials-list, body.dark .works-modal-content{background:rgba(255,255,255,0.03);color:var(--text)}
+
+/* end of structured stylesheet */

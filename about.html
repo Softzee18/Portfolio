@@ -24,9 +24,9 @@
         <div class="header-center">
           <nav class="main-nav" id="mainNav">
             <a href="index.html" class="nav-link">Home</a>
-            <a href="skills.html" class="nav-link">Skills</a>
             <a href="services.html" class="nav-link">Services</a>
-            <a href="about.html" class="nav-link" aria-current="page">Profile</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="about.html" class="nav-link" aria-current="page">About</a>
             <a href="contact.html" class="nav-link">Contact</a>
           </nav>
         </div>
@@ -50,11 +50,11 @@
       </div>
       <!-- mobile nav (slides down) -->
       <div class="mobile-nav" id="mobileNav" aria-hidden="true">
-        <a href="index.html" class="mobile-link">Home</a>
-        <a href="skills.html" class="mobile-link">Skills</a>
-        <a href="services.html" class="mobile-link">Services</a>
-        <a href="about.html" class="mobile-link" aria-current="page">Profile</a>
-        <a href="contact.html" class="mobile-link mobile-cta">Contact</a>
+       <a href="index.html" class="nav-link">Home</a>
+            <a href="services.html" class="nav-link">Services</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="about.html" class="nav-link" aria-current="page">About</a>
+            <a href="contact.html" class="nav-link">Contact</a>
       </div>
     </div>
   </header>
@@ -71,7 +71,7 @@
             I help businesses and individuals grow with <strong>digital solutions</strong> — from data entry and virtual assistance to graphics design and social media advertising. My focus is on accuracy, creativity, and client satisfaction.
           </p>
           <ul class="about-list">
-            <li>✔ 5+ years experience in digital services</li>
+            <!-- <li>✔ years experience in digital services</li> -->
             <li>✔ Fast, reliable, and detail-oriented</li>
             <li>✔ Excellent communication and support</li>
             <li>✔ 100% client satisfaction</li>
@@ -83,7 +83,7 @@
 
     <section class="about-skills section">
       <div class="container">
-        <h2>My Core Skills</h2>
+        <h2>Core Skills</h2>
         <div class="skills-list">
           <div class="skill-item">
             <span class="skill-title">Data Entry & Admin</span>
@@ -108,9 +108,29 @@
     <section class="about-testimonials section">
       <div class="container">
         <h2>What Clients Say</h2>
-        <div class="testimonial-card">
-          <p>"Blessing is reliable and delivers quality work every time. Highly recommended!"</p>
-          <strong>— Business Owner, Abuja</strong>
+        <div class="testimonials-wrapper">
+          <div id="testimonialsList" class="testimonials-list">
+            <!-- Testimonials rendered here by JavaScript -->
+          </div>
+          <!-- Add testimonial form -->
+          <div class="testimonial-form">
+            <h3>Share Your Experience</h3>
+            <form id="testimonialForm" action="#" method="POST">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="company">Company/Title (optional)</label>
+                <input type="text" id="company" name="company">
+              </div>
+              <div class="form-group">
+                <label for="testimonial">Your Testimonial</label>
+                <textarea id="testimonial" name="testimonial" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="btn primary">Submit Testimonial</button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
@@ -131,11 +151,15 @@
       <div class="footer-right">
         <a href="index.html" class="tiny-link">Home</a>
         <a href="contact.html" class="tiny-link">Contact</a>
+        <!-- Admin toggle (client-side only) -->
+        <a href="#" id="adminToggle" class="tiny-link" title="Toggle admin mode">Admin</a>
       </div>
     </div>
     <div class="copyright">© <span id="year4"></span> Blessing Happy</div>
   </footer>
 
+  <script src="js/api.js"></script>
+  <script src="js/testimonials.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

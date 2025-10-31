@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+ >  
 </head>
 <body class="light">
   
@@ -26,9 +27,9 @@
         <div class="header-center">
           <nav class="main-nav" id="mainNav">
             <a href="index.html" class="nav-link" aria-current="page">Home</a>
-            <a href="skills.html" class="nav-link">Skills</a>
             <a href="services.html" class="nav-link">Services</a>
-            <a href="about.html" class="nav-link">Profile</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="about.html" class="nav-link">About</a>
             <a href="contact.html" class="nav-link">Contact</a>
           </nav>
         </div>
@@ -53,9 +54,9 @@
       <!-- mobile nav (slides down) -->
       <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
         <a href="index.html" class="mobile-link" aria-current="page">Home</a>
-        <a href="skills.html" class="mobile-link">Skills</a>
-        <a href="services.html" class="mobile-link">Services</a>
-        <a href="about.html" class="mobile-link">Profile</a>
+        <a href="services.html" class="mobile-link">Services/a>
+        <a href="portfolio.html" class="mobile-link">Portfolio</a>
+        <a href="about.html" class="mobile-link">About/a>
         <a href="contact.html" class="mobile-link mobile-cta">Contact</a>
       </nav>
     </div>
@@ -63,33 +64,50 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero home-hero">
       <div class="container hero-inner">
         <div class="hero-left">
-          <h1 class="reveal">Helping Businesses Grow with Digital Solutions</h1>
-          <p class="sub reveal delay-1">
-            Data Entry • Virtual Assistance • Graphics Design • Social Media Ads
-          </p>
-          <div class="hero-buttons reveal delay-2">
-            <a class="btn primary" href="services.html">See Services</a>
-            <a class="btn ghost" href="contact.html">Contact Me</a>
+          <h1 class="reveal">Grow faster with <span class="highlight">smart digital services</span></h1>
+          <p class="sub reveal delay-1">Design, admin & advertising that turn visitors into customers.</p>
+
+          <div class="hero-cta reveal delay-2">
+            <a class="btn primary" href="Portfolio.html">Explore Services</a>
+            <a class="btn ghost" href="contact.html">Start a Project</a>
           </div>
-          <ul class="badge-list reveal delay-3">
-            <li>Fast delivery</li>
-            <li>Accurate & reliable</li>
-            <li>Mobile-friendly designs</li>
-          </ul>
+
+          <div class="hero-features reveal delay-3">
+            <div class="feature">
+              <strong>Fast delivery</strong>
+              <small>Quick turnarounds without compromise</small>
+            </div>
+            <div class="feature">
+              <strong>High accuracy</strong>
+              <small>Careful, detail-first work</small>
+            </div>
+            <div class="feature">
+              <strong>Creative ads</strong>
+              <small>Conversion-focused creatives</small>
+            </div>
+          </div>
         </div>
+
         <div class="hero-right reveal delay-1">
-          <div class="portrait">
-            <!-- Image Slider -->
-            <div class="image-slider" id="imageSlider">
-              <div class="image-slider-track">
-                <img src="images/flyer.png" alt="Flyer Design Example" class="slider-img" loading="lazy">
-                <img src="images/logo.jpg" alt="Logo Design Example" class="slider-img" loading="lazy">
-                <img src="images/logo2.png" alt="Alternate Logo Example" class="slider-img" loading="lazy">
+          <div class="hero-showcase">
+            <div class="showcase-card card-a active">
+              <img src="images/flyer.png" alt="Flyer" loading="lazy">
+            </div>
+            <div class="showcase-card card-b">
+              <img src="images/logo.jpg" alt="Logo" loading="lazy">
+            </div>
+            <div class="showcase-device">
+              <div class="device-screen">
+                <img src="images/logo2.png" alt="Work sample" loading="lazy">
               </div>
             </div>
+            <!-- Slideshow controls (arrows + dots) -->
+            <button class="hero-nav hero-prev" id="heroPrev" aria-label="Previous slide">‹</button>
+            <button class="hero-nav hero-next" id="heroNext" aria-label="Next slide">›</button>
+            <div class="hero-dots" id="heroDots" aria-hidden="false"></div>
           </div>
         </div>
       </div>

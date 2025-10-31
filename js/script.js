@@ -138,15 +138,207 @@ document.addEventListener('DOMContentLoaded', function () {
   }, {threshold: 0.12});
   reveals.forEach(r => observer.observe(r));
 
-  // --- Simple form submit (demo) ---
-  const forms = document.querySelectorAll('.contact-form');
-  forms.forEach(frm=>{
-    frm.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      alert('Message sent (demo). I will wire the real form when you want to go live.');
-      frm.reset();
+  // --- HERO SHOWCASE SLIDESHOW (manual + autoplay) ---
+  (function heroSlideshow(){
+    const showcase = document.querySelector('.hero-showcase');
+    if (!showcase) return;
+    const slides = Array.from(showcase.children).filter(el => !el.classList.contains('hero-dots') && !el.classList.contains('hero-nav'));
+    if (!slides.length) return;
+
+    // create dots if not present
+    const dotsContainer = document.getElementById('heroDots');
+    const prevBtn = document.getElementById('heroPrev');
+    const nextBtn = document.getElementById('heroNext');
+
+    // initialize slides state
+    let idx = 0;
+    let interval = null;
+    const isMobile = () => window.innerWidth <= 979;
+
+    function updateSlides() {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === idx);
+      });
+      // update dots
+      if (dotsContainer) {
+        dotsContainer.querySelectorAll('button').forEach((b,i)=> b.classList.toggle('active', i===idx));
+      }
+    }
+
+    function go(n) {
+      idx = (n + slides.length) % slides.length;
+      updateSlides();
+    }
+
+    function next() { go(idx + 1); }
+    function prev() { go(idx - 1); }
+
+    // build dots
+    if (dotsContainer && dotsContainer.children.length === 0) {
+      slides.forEach((_,i)=>{
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        b.addEventListener('click', ()=> { go(i); pauseAuto(); });
+        dotsContainer.appendChild(b);
+      });
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', ()=>{ prev(); pauseAuto(); });
+    if (nextBtn) nextBtn.addEventListener('click', ()=>{ next(); pauseAuto(); });
+
+    function startAuto(){
+      stopAuto();
+      interval = setInterval(()=>{ next(); }, 4000);
+    }
+    function stopAuto(){ if (interval) { clearInterval(interval); interval = null; } }
+    function pauseAuto(){ stopAuto(); setTimeout(()=>{ if(!isMobile()) startAuto(); }, 6000); }
+
+    // pause on hover/focus
+    showcase.addEventListener('mouseenter', stopAuto);
+    showcase.addEventListener('mouseleave', ()=>{ if(!isMobile()) startAuto(); });
+    showcase.addEventListener('focusin', stopAuto);
+    showcase.addEventListener('focusout', ()=>{ if(!isMobile()) startAuto(); });
+
+    // on resize: if mobile, ensure only active slide visible; resume/stop autoplay appropriately
+    window.addEventListener('resize', ()=>{
+      updateSlides();
+      if (isMobile()) stopAuto(); else if (!interval) startAuto();
     });
-  });
+
+    // initial
+    updateSlides();
+    if (!isMobile()) startAuto();
+  })();
+
+  // --- Testimonials persistence & moderation (client-side demo) ---
+  const TESTIMONIALS_KEY = 'bh_testimonials';
+  const ADMIN_KEY = 'bh_admin';
+
+  function loadTestimonials() {
+    try {
+      const raw = localStorage.getItem(TESTIMONIALS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function saveTestimonials(list) {
+    localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(list));
+  }
+
+  // Render testimonials: public sees only approved; admin sees pending and approve/delete controls
+  function renderTestimonials() {
+    const listEl = document.getElementById('testimonialsList');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    const items = loadTestimonials();
+    const isAdmin = localStorage.getItem(ADMIN_KEY) === '1';
+
+    // Approved first
+    items.filter(t => t.status === 'approved').forEach(t => {
+      const el = document.createElement('div');
+      el.className = 'testimonial-card';
+      el.dataset.id = t.id;
+      el.innerHTML = `<p>"${escapeHtml(t.text)}"</p><strong>— ${escapeHtml(t.name)}${t.company ? `, ${escapeHtml(t.company)}` : ''}</strong>`;
+      listEl.appendChild(el);
+    });
+
+    // If admin, show pending items with controls
+    if (isAdmin) {
+      items.filter(t => t.status === 'pending').forEach(t => {
+        const el = document.createElement('div');
+        el.className = 'testimonial-card pending';
+        el.dataset.id = t.id;
+        el.innerHTML = `<p>"${escapeHtml(t.text)}"</p><strong>— ${escapeHtml(t.name)}${t.company ? `, ${escapeHtml(t.company)}` : ''}</strong>`;
+        const ctrl = document.createElement('div');
+        ctrl.className = 'admin-controls';
+        const approve = document.createElement('button');
+        approve.className = 'admin-btn approve';
+        approve.textContent = 'Approve';
+        approve.dataset.id = t.id;
+        const del = document.createElement('button');
+        del.className = 'admin-btn delete';
+        del.textContent = 'Delete';
+        del.dataset.id = t.id;
+        ctrl.appendChild(approve);
+        ctrl.appendChild(del);
+        el.appendChild(ctrl);
+        listEl.appendChild(el);
+      });
+    }
+  }
+
+  // Basic XSS escape for inserted strings
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"'`]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;","`":"&#x60;"}[s]));
+  }
+
+  // Handle form submit: save as pending
+  const testimonialForm = document.getElementById('testimonialForm');
+  if (testimonialForm) {
+    testimonialForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = this.querySelector('#name')?.value?.trim() || 'Anonymous';
+      const company = this.querySelector('#company')?.value?.trim() || '';
+      const text = this.querySelector('#testimonial')?.value?.trim();
+      if (!text) { alert('Please enter your testimonial.'); return; }
+      const items = loadTestimonials();
+      const item = { id: Date.now().toString(), name, company, text, status: 'pending' };
+      items.push(item);
+      saveTestimonials(items);
+      this.reset();
+      alert('Thanks — your testimonial was saved and is pending review.');
+      renderTestimonials();
+    });
+  }
+
+  // Admin toggle
+  const adminToggle = document.getElementById('adminToggle');
+  function updateAdminLabel() {
+    if (!adminToggle) return;
+    const on = localStorage.getItem(ADMIN_KEY) === '1';
+    adminToggle.textContent = on ? 'Admin (on)' : 'Admin';
+  }
+  if (adminToggle) {
+    adminToggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      const on = localStorage.getItem(ADMIN_KEY) === '1';
+      localStorage.setItem(ADMIN_KEY, on ? '0' : '1');
+      updateAdminLabel();
+      renderTestimonials();
+    });
+    updateAdminLabel();
+  }
+
+  // Delegate approve/delete actions
+  const testimonialsContainer = document.getElementById('testimonialsList');
+  if (testimonialsContainer) {
+    testimonialsContainer.addEventListener('click', function (e) {
+      const btn = e.target.closest('.admin-btn');
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (!id) return;
+      const items = loadTestimonials();
+      const idx = items.findIndex(i => i.id === id);
+      if (idx === -1) return;
+      if (btn.classList.contains('approve')) {
+        items[idx].status = 'approved';
+        saveTestimonials(items);
+        renderTestimonials();
+      }
+      if (btn.classList.contains('delete')) {
+        if (!confirm('Delete this testimonial? This action cannot be undone.')) return;
+        items.splice(idx, 1);
+        saveTestimonials(items);
+        renderTestimonials();
+      }
+    });
+  }
+
+  // Initial render for testimonials
+  renderTestimonials();
 
   // --- Nav dropdown: only show on hover/click if NOT on skills page ---
   document.querySelectorAll('.nav-dropdown').forEach(drop => {
